@@ -1,0 +1,198 @@
+{
+  "metadata": {
+    "timestamp": "2026-04-19T05:56:44.457793",
+    "exchange_rate": 9.266678,
+    "weights": {
+      "1": 0.2,
+      "2": 0.2,
+      "3": 0.2,
+      "4": 0.2,
+      "5": 0.2
+    },
+    "kr_quality_score": 60.0
+  },
+  "countries": {
+    "JP": [
+      {
+        "country": "JP",
+        "category": "방문개호",
+        "service_name": "방문개호_신체20분미만",
+        "grade": "all",
+        "krw_value": 17641,
+        "last_updated": "2026-04-19 05:56:44"
+      },
+      {
+        "country": "JP",
+        "category": "방문개호",
+        "service_name": "방문개호_신체30분~60분",
+        "grade": "all",
+        "krw_value": 41833,
+        "last_updated": "2026-04-19 05:56:44"
+      },
+      {
+        "country": "JP",
+        "category": "노인요양시설",
+        "service_name": "개호노인복지시설_1일",
+        "grade": "1",
+        "krw_value": 86836,
+        "last_updated": "2026-04-19 05:56:44"
+      },
+      {
+        "country": "JP",
+        "category": "노인보건시설",
+        "service_name": "개호노인보건시설_1일",
+        "grade": "1",
+        "krw_value": 90850,
+        "last_updated": "2026-04-19 05:56:44"
+      },
+      {
+        "country": "JP",
+        "category": "특정시설",
+        "service_name": "특정시설입소자생활개호_1일",
+        "grade": "1",
+        "krw_value": 57362,
+        "last_updated": "2026-04-19 05:56:44"
+      }
+    ],
+    "KR": [
+      {
+        "country": "KR",
+        "category": "방문요양",
+        "service_name": "방문요양_1_60",
+        "grade": "1",
+        "fee": 17500,
+        "unit_value": 17500,
+        "year": 2026,
+        "last_updated": "2026-04-19",
+        "source": "data.go.kr (via SESI Engine)"
+      },
+      {
+        "country": "KR",
+        "category": "방문요양",
+        "service_name": "방문요양_1_90",
+        "grade": "1",
+        "fee": 26500,
+        "unit_value": 26500,
+        "year": 2026,
+        "last_updated": "2026-04-19",
+        "source": "data.go.kr (via SESI Engine)"
+      },
+      {
+        "country": "KR",
+        "category": "방문요양",
+        "service_name": "방문요양_2_60",
+        "grade": "2",
+        "fee": 17500,
+        "unit_value": 17500,
+        "year": 2026,
+        "last_updated": "2026-04-19",
+        "source": "data.go.kr (via SESI Engine)"
+      },
+      {
+        "country": "KR",
+        "category": "방문요양",
+        "service_name": "방문요양_3_60",
+        "grade": "3",
+        "fee": 17500,
+        "unit_value": 17500,
+        "year": 2026,
+        "last_updated": "2026-04-19",
+        "source": "data.go.kr (via SESI Engine)"
+      },
+      {
+        "country": "KR",
+        "category": "입소시설",
+        "service_name": "입소시설_1_daily",
+        "grade": "1",
+        "fee": 96800,
+        "unit_value": 96800,
+        "year": 2026,
+        "last_updated": "2026-04-19",
+        "source": "data.go.kr (via SESI Engine)"
+      },
+      {
+        "country": "KR",
+        "category": "입소시설",
+        "service_name": "입소시설_2_daily",
+        "grade": "2",
+        "fee": 92000,
+        "unit_value": 92000,
+        "year": 2026,
+        "last_updated": "2026-04-19",
+        "source": "data.go.kr (via SESI Engine)"
+      },
+      {
+        "country": "KR",
+        "category": "입소시설",
+        "service_name": "입소시설_3_daily",
+        "grade": "3",
+        "fee": 84000,
+        "unit_value": 84000,
+        "year": 2026,
+        "last_updated": "2026-04-19",
+        "source": "data.go.kr (via SESI Engine)"
+      },
+      {
+        "country": "KR",
+        "category": "입소시설",
+        "service_name": "입소시설_4_daily",
+        "grade": "4",
+        "fee": 84000,
+        "unit_value": 84000,
+        "year": 2026,
+        "last_updated": "2026-04-19",
+        "source": "data.go.kr (via SESI Engine)"
+      },
+      {
+        "country": "KR",
+        "category": "입소시설",
+        "service_name": "입소시설_5_daily",
+        "grade": "5",
+        "fee": 84000,
+        "unit_value": 84000,
+        "year": 2026,
+        "last_updated": "2026-04-19",
+        "source": "data.go.kr (via SESI Engine)"
+      },
+      {
+        "country": "KR",
+        "category": "방문욕조",
+        "service_name": "방문욕조_All_once",
+        "grade": "All",
+        "fee": 78000,
+        "unit_value": 78000,
+        "year": 2026,
+        "last_updated": "2026-04-19",
+        "source": "data.go.kr (via SESI Engine)"
+      },
+      {
+        "country": "KR",
+        "category": "방문간호",
+        "service_name": "방문간호_All_once",
+        "grade": "All",
+        "fee": 54000,
+        "unit_value": 54000,
+        "year": 2026,
+        "last_updated": "2026-04-19",
+        "source": "data.go.kr (via SESI Engine)"
+      },
+      {
+        "country": "KR",
+        "category": "단기보호",
+        "service_name": "단기보호_1_daily",
+        "grade": "1",
+        "fee": 82000,
+        "unit_value": 82000,
+        "year": 2026,
+        "last_updated": "2026-04-19",
+        "source": "data.go.kr (via SESI Engine)"
+      }
+    ]
+  },
+  "scores": {
+    "jp_weighted_avg_krw": 17641,
+    "kr_weighted_avg_krw": 44100,
+    "raw_ratio": 2.4999,
+    "quality_adjusted_sesi_score": 4.1664
+  }
+}
