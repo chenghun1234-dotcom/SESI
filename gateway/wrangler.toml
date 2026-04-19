@@ -1,0 +1,6 @@
+name = "sesi-gateway"
+main = "index.js"
+compatibility_date = "2024-04-19"
+
+[vars]
+# You can add global variables here if needed
