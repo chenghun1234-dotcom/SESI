@@ -7,6 +7,7 @@ data/raw_large/
 # Firebase / Secrets
 sesi-ea958-*.json
 *.json
+!public/api/sesi_index.json
 .env
 
 # Python
