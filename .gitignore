@@ -1,0 +1,20 @@
+# Data
+data/.trash/
+data/raw_large/
+*.xlsx
+*.hwpx
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+env/
+venv/
+.env
+
+# SESI API
+public/api/sesi_index.json
+
+# IDE
+.vscode/
+.idea/
