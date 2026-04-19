@@ -3,12 +3,11 @@ import requests
 import json
 import csv
 from datetime import datetime
-from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials, firestore
 
 # Load environment variables
-load_dotenv()
+# load_dotenv() - Removed for environment stability
 
 class SESIFeeImporter:
     def __init__(self, db_client=None):
