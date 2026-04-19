@@ -4,6 +4,11 @@ data/raw_large/
 *.xlsx
 *.hwpx
 
+# Firebase / Secrets
+sesi-ea958-*.json
+*.json
+.env
+
 # Python
 __pycache__/
 *.py[cod]
