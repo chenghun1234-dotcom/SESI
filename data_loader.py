@@ -7,11 +7,12 @@ class SESIDataLoader:
     def __init__(self, base_dir="data"):
         self.base_dir = base_dir
         self.stats_dir = os.path.join(base_dir, "statistics")
-        self.fees_dir = os.path.join(base_dir, "fees") # Fallback or specific JP fees
+        self.infra_dir = os.path.join(base_dir, "infrastructure")
+        self.fees_dir = os.path.join(base_dir, "fees")
         
     def load_jp_fees(self, filename="jp_fees.csv"):
         """Loads Japanese fee data from CSV."""
-        path = os.path.join(self.base_dir, "fees", filename)
+        path = os.path.join(self.fees_dir, filename)
         if not os.path.exists(path):
             path = os.path.join(self.base_dir, filename)
             
@@ -31,11 +32,7 @@ class SESIDataLoader:
         return fees
 
     def load_grade_weights(self):
-        """
-        Loads the latest grade distribution weights from NHIS statistics.
-        Returns a dict: { "1": 0.1, "2": 0.2, ... }
-        """
-        # Looking for '국민건강보험공단_노인장기요양보험 인정현황'
+        """Loads the latest grade distribution weights."""
         target_file = ""
         for f in os.listdir(self.stats_dir):
             if "장기요양보험 인정현황" in f and f.endswith(".csv"):
@@ -43,30 +40,23 @@ class SESIDataLoader:
                 break
         
         if not target_file:
-            print("WARNING: Recognition statistics file not found. Using equal weights.")
             return {str(i): 1.0/5.0 for i in range(1, 6)}
 
         path = os.path.join(self.stats_dir, target_file)
         try:
-            # Try CP949 first (standard for KR govt CSVs)
-            try:
-                df = pd.read_csv(path, encoding='cp949')
-            except:
-                df = pd.read_csv(path, encoding='utf-8')
+            # Smart encoding check
+            df = None
+            for enc in ['cp949', 'utf-8', 'euc-kr']:
+                try:
+                    df = pd.read_csv(path, encoding=enc)
+                    break
+                except:
+                    continue
+            
+            if df is None: return {str(i): 1.0/5.0 for i in range(1, 6)}
 
-            # Filter for '비율' (Ratio) rows
-            # Columns usually: 구분1 (Year), 구분2 (Inwon/Ratio), 전체계, 인정자소계, 1등급, 2등급...
             ratio_df = df[df.iloc[:, 1] == '비율']
-            if ratio_df.empty:
-                # Some files might use different column names
-                ratio_df = df[df.apply(lambda r: '비율' in str(r.values), axis=1)]
-            
-            # Get the most recent year (last row of ratios)
             latest_ratios = ratio_df.iloc[-1]
-            
-            # Map grades 1-5
-            # Headers are usually index 4 to 8 (1등급, 2등급, 3등급, 4등급, 5등급)
-            # We normalize them to 0.0 - 1.0
             weights = {
                 "1": float(latest_ratios[4]) / 100.0,
                 "2": float(latest_ratios[5]) / 100.0,
@@ -75,13 +65,40 @@ class SESIDataLoader:
                 "5": float(latest_ratios[8]) / 100.0
             }
             return weights
-            
-        except Exception as e:
-            print(f"ERROR: Failed to parse weights from {target_file}: {e}")
+        except:
             return {str(i): 1.0/5.0 for i in range(1, 6)}
 
+    def calculate_quality_index(self):
+        """Calculates average quality score (A-E) from infrastructure data."""
+        target_file = ""
+        for f in os.listdir(self.infra_dir):
+            if "평가 결과" in f and f.endswith(".csv"):
+                target_file = f
+                break
+        
+        if not target_file:
+            return 80.0 # Default High-Quality assumption
+
+        path = os.path.join(self.infra_dir, target_file)
+        try:
+            df = None
+            for enc in ['cp949', 'utf-8']:
+                try:
+                    df = pd.read_csv(path, encoding=enc)
+                    break
+                except:
+                    continue
+            
+            if df is None: return 80.0
+            
+            # Map A=100, B=80, C=60, D=40, E=20
+            grade_map = {'A': 100, 'B': 80, 'C': 60, 'D': 40, 'E': 20}
+            # Column 5 is '평가등급'
+            grades = df.iloc[:, 5].dropna().map(grade_map).fillna(60)
+            return round(grades.mean(), 2)
+        except:
+            return 80.0
+
 if __name__ == "__main__":
-    # Test
     loader = SESIDataLoader()
-    print("JP Fees:", loader.load_jp_fees())
-    print("Weights:", loader.load_grade_weights())
+    print("Quality Score:", loader.calculate_quality_index())

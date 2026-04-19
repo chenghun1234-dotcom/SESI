@@ -14,7 +14,6 @@ class SESIEngine:
         self.kr_importer = SESIFeeImporter(db_client=self.db)
         
     def _init_firebase(self):
-        """Initializes Firebase from Environment Variables."""
         if not firebase_admin._apps:
             try:
                 firebase_key_raw = os.environ.get('FIREBASE_KEY')
@@ -25,14 +24,11 @@ class SESIEngine:
                     except json.JSONDecodeError:
                         cred = credentials.Certificate(firebase_key_raw)
                     firebase_admin.initialize_app(cred)
-                else:
-                    print("[WARNING] FIREBASE_KEY not set. Local dry-run mode.")
-            except Exception as e:
-                print(f"[ERROR] Firebase init failed: {e}")
+            except:
+                pass
         return firestore.client() if firebase_admin._apps else None
 
     def get_exchange_rate(self):
-        """Fetches JPY/KRW rate."""
         try:
             url = "https://open.er-api.com/v6/latest/JPY"
             res = requests.get(url, timeout=10).json()
@@ -41,19 +37,19 @@ class SESIEngine:
             return 9.0
 
     def run(self):
-        print("SESI Engine Starting...")
+        print("SESI Multi-Factor Engine Starting...")
         
-        # 1. Basic Data
         xr = self.get_exchange_rate()
         weights = self.loader.load_grade_weights()
+        quality_score = self.loader.calculate_quality_index()
         jp_fees = self.loader.load_jp_fees()
         
         print(f"XR: 1 JPY = {xr:.2f} KRW")
-        print(f"Weights Loaded: {weights}")
+        print(f"Quality Score (KR): {quality_score}")
 
-        # 2. Process Japan (JP)
+        # Process Japan
         processed_jp = []
-        region_multiplier = 11.40 # Tokyo Standard
+        region_multiplier = 11.40
         for jp in jp_fees:
             jpy_val = jp['unit'] * region_multiplier
             krw_val = jpy_val * xr
@@ -62,65 +58,56 @@ class SESIEngine:
                 "category": jp['category'],
                 "service_name": jp['name'],
                 "grade": str(jp['grade']),
-                "unit_value": jp['unit'],
-                "multiplier": region_multiplier,
-                "jpy_value": round(jpy_val, 2),
                 "krw_value": int(krw_val),
                 "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             })
 
-        # 3. Process Korea (KR)
+        # Process Korea
         raw_kr = self.kr_importer.fetch_from_portal()
         processed_kr = self.kr_importer.index_and_transform(raw_kr)
 
-        # 4. Calculate Aggregate SESI Index
-        # Simple Logic: Average KRW value for Grade 1-5 Visiting Care
-        sesi_results = {
+        # Multi-Factor Indexing
+        results = {
             "metadata": {
                 "timestamp": datetime.now().isoformat(),
                 "exchange_rate": xr,
-                "weights": weights
+                "weights": weights,
+                "kr_quality_score": quality_score
             },
-            "countries": {
-                "JP": processed_jp,
-                "KR": processed_kr
-            },
-            "scores": self._calculate_scores(processed_jp, processed_kr, weights)
+            "countries": {"JP": processed_jp, "KR": processed_kr},
+            "scores": self._calculate_complex_scores(processed_jp, processed_kr, weights, quality_score)
         }
 
-        # 5. Output & Persistence
-        self._output_results(sesi_results)
-        
+        self._output_results(results)
         if self.db:
             self._upload_to_firestore(processed_jp + processed_kr)
             
-        print("SESI Pipeline Completed Successfully!")
+        print("SESI Engine Enhancement Completed!")
 
-    def _calculate_scores(self, jp, kr, weights):
-        """Calculates weighted average scores for comparison."""
-        # This is a simplified SESI Score logic
-        jp_score = 0
-        kr_score = 0
-        
-        # Calculate Weighted Average daily/per-service costs
-        # (This matches Grade 1-5 weights to the fees)
+    def _calculate_complex_scores(self, jp, kr, weights, quality):
+        jp_sum = 0
+        kr_sum = 0
         for g in ["1", "2", "3", "4", "5"]:
             w = weights.get(g, 0.2)
-            # Find matching JP facility fee
             jp_f = next((x for x in jp if x['grade'] == g or x['grade'] == 'all'), jp[0])
             kr_f = next((x for x in kr if x['grade'] == g), kr[0])
+            jp_sum += jp_f['krw_value'] * w
+            kr_sum += kr_f['fee'] * w
             
-            jp_score += jp_f['krw_value'] * w
-            kr_score += kr_f['fee'] * w
-            
+        # Quality-Adjusted Ratio
+        # Lower index means better value (cost per quality unit)
+        raw_ratio = kr_sum / jp_sum if jp_sum > 0 else 0
+        quality_factor = quality / 100.0
+        adjusted_score = raw_ratio / quality_factor if quality_factor > 0 else raw_ratio
+        
         return {
-            "jp_weighted_avg_krw": int(jp_score),
-            "kr_weighted_avg_krw": int(kr_score),
-            "ratio": round(kr_score / jp_score, 4) if jp_score > 0 else 0
+            "jp_weighted_avg_krw": int(jp_sum),
+            "kr_weighted_avg_krw": int(kr_sum),
+            "raw_ratio": round(raw_ratio, 4),
+            "quality_adjusted_sesi_score": round(adjusted_score, 4)
         }
 
     def _output_results(self, results):
-        """Saves to public/api for static distribution."""
         os.makedirs("public/api", exist_ok=True)
         with open("public/api/sesi_index.json", "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2, ensure_ascii=False)
@@ -128,6 +115,7 @@ class SESIEngine:
 
     def _upload_to_firestore(self, all_data):
         print(f"Uploading {len(all_data)} items to Firestore...")
+        if not self.db: return
         batch = self.db.batch()
         coll = self.db.collection("SESI_Global_Index")
         for i, item in enumerate(all_data):

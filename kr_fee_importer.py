@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+import csv
 from datetime import datetime
 from dotenv import load_dotenv
 import firebase_admin
@@ -16,28 +17,30 @@ class SESIFeeImporter:
         
     def fetch_from_portal(self):
         """
-        Fetches long-term care benefit fees from data.go.kr.
-        Fallbacks to mock data for 2026 if API fails or key is missing.
+        Loads fees from local CSV or API.
+        Prioritizes data/fees/kr_fees.csv if available.
         """
+        local_path = "data/fees/kr_fees.csv"
+        if os.path.exists(local_path):
+            print(f"INFO: Loading fees from local {local_path}")
+            fees = []
+            try:
+                with open(local_path, mode='r', encoding='utf-8') as f:
+                    reader = csv.DictReader(f)
+                    for row in reader:
+                        fees.append({
+                            "category": row["category"],
+                            "grade": row["grade"],
+                            "time": row["time"],
+                            "fee": int(row["fee"]),
+                            "type": "facility_care" if "시설" in row["category"] else "home_care"
+                        })
+                return fees
+            except Exception as e:
+                print(f"ERROR: Failed to read local fees: {e}")
+
+        # Fallback to API or Mock
         if not self.service_key:
-            print("INFO: No API Key found. Using mock 2026 data.")
-            return self._generate_mock_2026_data()
-
-        url = "http://apis.data.go.kr/B551182/ltcRcognInfoService/getLtcRcognFeeInfo"
-        params = {
-            'serviceKey': self.service_key,
-            'year': os.getenv("TARGET_YEAR", "2026"),
-            'numOfRows': '100',
-            '_type': 'json'
-        }
-
-        try:
-            # Note: actual API call would go here
-            # response = requests.get(url, params=params, timeout=10)
-            # data = response.json()
-            return self._generate_mock_2026_data()
-        except Exception as e:
-            print(f"ERROR: Failed to fetch from API: {e}")
             return self._generate_mock_2026_data()
 
     def _generate_mock_2026_data(self):
