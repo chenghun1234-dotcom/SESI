@@ -1,3 +1,4 @@
+# SESI Global Index Engine - Heartbeat 2026-04-19
 import os
 import requests
 import json
