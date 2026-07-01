@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "timestamp": "2026-06-01T21:27:19.693421",
-    "exchange_rate": 9.458858,
+    "timestamp": "2026-07-01T19:47:12.063966",
+    "exchange_rate": 9.538206,
     "weights": {
       "1": 0.2,
       "2": 0.2,
@@ -18,40 +18,40 @@
         "category": "방문개호",
         "service_name": "방문개호_신체20분미만",
         "grade": "all",
-        "krw_value": 18007,
-        "last_updated": "2026-06-01 21:27:19"
+        "krw_value": 18158,
+        "last_updated": "2026-07-01 19:47:12"
       },
       {
         "country": "JP",
         "category": "방문개호",
         "service_name": "방문개호_신체30분~60분",
         "grade": "all",
-        "krw_value": 42701,
-        "last_updated": "2026-06-01 21:27:19"
+        "krw_value": 43059,
+        "last_updated": "2026-07-01 19:47:12"
       },
       {
         "country": "JP",
         "category": "노인요양시설",
         "service_name": "개호노인복지시설_1일",
         "grade": "1",
-        "krw_value": 88637,
-        "last_updated": "2026-06-01 21:27:19"
+        "krw_value": 89380,
+        "last_updated": "2026-07-01 19:47:12"
       },
       {
         "country": "JP",
         "category": "노인보건시설",
         "service_name": "개호노인보건시설_1일",
         "grade": "1",
-        "krw_value": 92734,
-        "last_updated": "2026-06-01 21:27:19"
+        "krw_value": 93512,
+        "last_updated": "2026-07-01 19:47:12"
       },
       {
         "country": "JP",
         "category": "특정시설",
         "service_name": "특정시설입소자생활개호_1일",
         "grade": "1",
-        "krw_value": 58552,
-        "last_updated": "2026-06-01 21:27:19"
+        "krw_value": 59043,
+        "last_updated": "2026-07-01 19:47:12"
       }
     ],
     "KR": [
@@ -63,7 +63,7 @@
         "fee": 17500,
         "unit_value": 17500,
         "year": 2026,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-07-01",
         "source": "data.go.kr (via SESI Engine)"
       },
       {
@@ -74,7 +74,7 @@
         "fee": 26500,
         "unit_value": 26500,
         "year": 2026,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-07-01",
         "source": "data.go.kr (via SESI Engine)"
       },
       {
@@ -85,7 +85,7 @@
         "fee": 17500,
         "unit_value": 17500,
         "year": 2026,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-07-01",
         "source": "data.go.kr (via SESI Engine)"
       },
       {
@@ -96,7 +96,7 @@
         "fee": 17500,
         "unit_value": 17500,
         "year": 2026,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-07-01",
         "source": "data.go.kr (via SESI Engine)"
       },
       {
@@ -107,7 +107,7 @@
         "fee": 96800,
         "unit_value": 96800,
         "year": 2026,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-07-01",
         "source": "data.go.kr (via SESI Engine)"
       },
       {
@@ -118,7 +118,7 @@
         "fee": 92000,
         "unit_value": 92000,
         "year": 2026,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-07-01",
         "source": "data.go.kr (via SESI Engine)"
       },
       {
@@ -129,7 +129,7 @@
         "fee": 84000,
         "unit_value": 84000,
         "year": 2026,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-07-01",
         "source": "data.go.kr (via SESI Engine)"
       },
       {
@@ -140,7 +140,7 @@
         "fee": 84000,
         "unit_value": 84000,
         "year": 2026,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-07-01",
         "source": "data.go.kr (via SESI Engine)"
       },
       {
@@ -151,7 +151,7 @@
         "fee": 84000,
         "unit_value": 84000,
         "year": 2026,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-07-01",
         "source": "data.go.kr (via SESI Engine)"
       },
       {
@@ -162,7 +162,7 @@
         "fee": 78000,
         "unit_value": 78000,
         "year": 2026,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-07-01",
         "source": "data.go.kr (via SESI Engine)"
       },
       {
@@ -173,7 +173,7 @@
         "fee": 54000,
         "unit_value": 54000,
         "year": 2026,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-07-01",
         "source": "data.go.kr (via SESI Engine)"
       },
       {
@@ -184,15 +184,15 @@
         "fee": 82000,
         "unit_value": 82000,
         "year": 2026,
-        "last_updated": "2026-06-01",
+        "last_updated": "2026-07-01",
         "source": "data.go.kr (via SESI Engine)"
       }
     ]
   },
   "scores": {
-    "jp_weighted_avg_krw": 18007,
+    "jp_weighted_avg_krw": 18158,
     "kr_weighted_avg_krw": 44100,
-    "raw_ratio": 2.449,
-    "quality_adjusted_sesi_score": 4.0817
+    "raw_ratio": 2.4287,
+    "quality_adjusted_sesi_score": 4.0478
   }
 }
